@@ -5,11 +5,16 @@ var chainCodeID = "4caae8cf2298bbcc8d3e1f8ef57ea1c7f0f78d1b6b96a93822666c8a9d39c
 if (process.argv.length >= 4) {
   chainCodeID = process.argv[3];
 }
+var maxAccNo = 99999;
+if (process.argv.length >= 5) {
+  maxAccNo = parseInt(process.argv[4], 10);
+}
+console.log("Max Account Number: " + maxAccNo);
 
-var zipfGenerator = require('zipfian').getGenerator(99999);
+var zipfGenerator = require('zipfian').getGenerator(maxAccNo);
 function gen_acc(n) {
   var zeros = "00000000000000000000"
-  var str = n.toString(16);
+  var str = n.toString(10);
   return "0x"+zeros.slice(str.length)+str;
 }
 
@@ -47,6 +52,7 @@ function invoke(func, args) {
       "type": 1,
       "chaincodeID":{
 	"name" : chainCodeID
+//	"name" : "mycc"
       },
       "ctorMsg": {
         "function": func,
@@ -55,6 +61,8 @@ function invoke(func, args) {
     },
     "id": 3
   });
+
+  // console.log("Invoke data: " + post_data);
 
   var post_options = {
     hostname: 'localhost',
@@ -115,11 +123,11 @@ function poll_height() {
           for (var i = 0; i < batch_size; ++i) {
             var from = Math.round(zipfGenerator.next());
             var to = Math.round(zipfGenerator.next());
-            while(from == to || from > 99999 || to > 99999 || from < 0 || to < 0) {
+            while(from == to || from > maxAccNo || to > maxAccNo || from < 0 || to < 0) {
               from = Math.round(zipfGenerator.next());
               to = Math.round(zipfGenerator.next());
             }
-            // console.log(from, " - ",  to);
+            // console.log("Tx ", from, " - ",  to);
             var val = Math.floor((Math.random() * 100) + 1);
             invoke("Send", [gen_acc(from), gen_acc(to), val.toString()]);
           }

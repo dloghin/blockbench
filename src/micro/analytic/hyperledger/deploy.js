@@ -7,6 +7,7 @@ var post_data = JSON.stringify({
     "type": 1,
     "chaincodeID":{
       "path":"https://github.com/ijingo/chaincode-test/analytic"
+//      "name":"mycc"
     },
     "ctorMsg": {
       "function":"Init",
