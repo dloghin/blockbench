@@ -15,6 +15,7 @@ account_list = []
 for key_file in key_list:
     decoded = json.loads(open(keyfile_folder_path+"/"+key_file).read())
     account_list.append('0x'+decoded[u'address'])
+    print('0x'+decoded[u'address'])
 
 config_file_template = open(config_file_path).read()
 for i in range(0, num):
@@ -27,7 +28,8 @@ for i in range(0, num):
 print "Generated %d config files, now generating genesis block json file\n" % num
 genesis_file_template = open(genesis_file_path).read()
 genesis = json.loads(genesis_file_template)
-for account in account_list[:num]:
+# for account in account_list[:num]:
+for account in account_list:
     genesis[u"engine"][u"authorityRound"][u"params"][u"validators"][u"list"].append(account)
     genesis[u"accounts"][account] = {u"balance": u"0x1000000000000000000000000000"}
 
