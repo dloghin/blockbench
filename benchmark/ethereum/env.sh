@@ -1,11 +1,31 @@
-ETH_HOME=/users/dinhtta/anh/blockchain-perf/benchmark/ethereum
+# Environment variables for Ethereum in Blockbench
+# 
+# If not set, ETH_HOME is the folder of this script. Please uncomment 
+# and change according to your setup.
+# ETH_HOME=
+# GETH_BIN=
+if [ -z "$ETH_HOME" ]; then
+	cd `dirname ${BASH_SOURCE-$0}`
+	ETH_HOME=`pwd`
+fi
+if [ -z "$GETH_BIN" ]; then
+	echo "Please set the path to geth binary"
+	exit 1
+fi
+
 HOSTS=$ETH_HOME/hosts
 CLIENTS=$ETH_HOME/clients
-ETH_DATA=/data/dinhtta/eth
-LOG_DIR=$ETH_HOME/donothing_donothingresults_1
-EXE_HOME=/users/dinhtta/anh/wangji_3/blockchain-perf/src/donothing
-BENCHMARK=ycsb
+ETH_DATA=$ETH_HOME/data
+LOG_DIR=$ETH_HOME/logs
 
-##comment these out for smallbank
-#EXE_HOME=$ETH_HOME/../../src/smallbank/ethereum/ycsb
-#BENCHMARK=smallbank
+# Define benchmark, which can be: donothing, ycsb or smallbank
+# BENCHMARK=donothing
+BENCHMARK=ycsb
+# BENCHMARK=smallbank
+
+# For ycsb and donothing, the driver is in src/macro/kvstore
+EXE_HOME=$ETH_HOME/../../src/macro/kvstore
+
+# For smallbank, the driver is in src/macro/smallbank (uncomment)
+# EXE_HOME=$ETH_HOME/../../src/macro/smallbank
+
