@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. .env.sh
+. env.sh
 
 # copy the latest env.sh to nodes and clients
 for host in `cat $HOSTS`; do
