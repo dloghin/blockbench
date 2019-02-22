@@ -15,7 +15,7 @@ NC=$2
 
 TSTAMP=`date +%F-%H-%M-%S`
 MASTER_LOG_DIR="geth-logs-$TSTAMP"
-mkdir -p $LOG_DIR
+mkdir -p $MASTER_LOG_DIR
 
 # hosts
 i=1

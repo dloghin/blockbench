@@ -1,5 +1,9 @@
 #!/bin/bash
 #nnodes
+if [ $# -lt 1 ]; then
+	echo "Usage: $0 <# nodes>"
+	exit 1
+fi
 cd `dirname ${BASH_SOURCE-$0}`
 . env.sh 
 
