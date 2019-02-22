@@ -23,12 +23,13 @@ function gen_txns() {
         value: val,
         gasPrice: 0,
         gas: 100000
-      });
+      }, "");
     } catch (error) {
       console.log("account: " + accounts[x]);
       console.log(error);
     }
     ++t;
+    console.log("Round " + t);
     if (t == INVOKE_TIMES) {
         process.exit();
     }
