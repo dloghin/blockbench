@@ -7,6 +7,7 @@ fi
 cd `dirname ${BASH_SOURCE-$0}`
 . env.sh 
 
+rm -f addPeer.txt
 i=0
 for host in `cat $HOSTS`; do
   if [[ $i -lt $1 ]]; then
