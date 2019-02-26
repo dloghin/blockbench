@@ -20,13 +20,13 @@ ETH_DATA=$ETH_HOME/data
 LOG_DIR=$ETH_HOME/logs
 
 # Define benchmark, which can be: donothing, ycsb or smallbank
-BENCHMARK=donothing
+# BENCHMARK=donothing
 # BENCHMARK=ycsb
-# BENCHMARK=smallbank
+BENCHMARK=smallbank
 
 # For ycsb and donothing, the driver is in src/macro/kvstore
-EXE_HOME=$ETH_HOME/../../src/macro/kvstore
+# EXE_HOME=$ETH_HOME/../../src/macro/kvstore
 
 # For smallbank, the driver is in src/macro/smallbank (uncomment)
-# EXE_HOME=$ETH_HOME/../../src/macro/smallbank
+EXE_HOME=$ETH_HOME/../../src/macro/smallbank
 

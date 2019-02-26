@@ -20,7 +20,7 @@ i=0
 for host in `cat $HOSTS`; do
   if [[ $i -lt $NNODES ]]; then
     echo "Starting mining node $host"
-    ssh -oStrictHostKeyChecking=no $host $ETH_HOME/start-mining.sh
+    ssh -oStrictHostKeyChecking=no $host $ETH_HOME/start-mining.sh $host
   fi
   let i=$i+1
 done
