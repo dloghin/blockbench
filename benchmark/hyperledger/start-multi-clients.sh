@@ -16,11 +16,13 @@ cd `dirname ${BASH_SOURCE-$0}`
 echo "Starting multi-clients ($NCLIENTS) ..."
 
 let i=0
-let K=$NCLIENTS/2
+# let K=$NCLIENTS/2
+let K=$NCLIENTS
 for client in `cat $CLIENTS`; do
   if [[ $i -lt $K ]]; then
-    echo $client index $i
-    ssh -oStrictHostKeyChecking=no $client $HL_HOME/start-clients.sh $NTHREADS $i $NSERVERS $TXRATE
+    echo "Start client $client index $i"
+    scp $HOSTS start-clients.sh $client:$HL_HOME/
+    ssh -oStrictHostKeyChecking=no $client "export LD_LIBRARY_PATH=/usr/local/lib && $HL_HOME/start-clients.sh $NTHREADS $i $NSERVERS $TXRATE"
   fi
   let i=$i+1
 done
@@ -47,7 +49,8 @@ if [[ "$DROP" == "-drop" ]]; then
     let i=$i+1
   done
 else
-  let M=$NSERVERS*10+300
+  # let M=$NSERVERS*10+300
+  let M=$WAIT_TIME
   sleep $M
   let i=0
   for client in `cat $CLIENTS`; do

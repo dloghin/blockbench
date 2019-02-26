@@ -12,13 +12,16 @@ TXRATE=$4
 cd `dirname ${BASH_SOURCE-$0}`
 . env.sh
 
-echo IN START_CLIENTS $1 $2 $3 $4
+# echo IN START_CLIENTS $1 $2 $3 $4
 
-LOG_DIR=$LOG_DIR/hl_exp_$NSERVERS"_"servers_$NTHREADS"_"threads_$TXRATE"_"rates
+export LD_LIBRARY_PATH="/usr/local/lib/"
+
+rm -rf $LOG_DIR
 mkdir -p $LOG_DIR
 i=0
 for host in `cat $HOSTS`; do
-	let n=i/2
+	# let n=i/2
+	let n=i
 	let i=i+1
 	if [[ $n -eq $INDEX ]]; then
 		cd $EXE_HOME

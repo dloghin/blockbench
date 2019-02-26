@@ -5,6 +5,8 @@ cd `dirname ${BASH_SOURCE-$0}`
 . env.sh
 
 sudo cp docker /etc/default/
+sudo cp docker.service /lib/systemd/system/
+sudo systemctl daemon-reload
 sudo service docker restart
 sudo apt-get install -y libsnappy-dev zlib1g-dev libbz2-dev
 
