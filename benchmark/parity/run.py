@@ -2,25 +2,55 @@
 import os
 import subprocess
 import sys
-from config import *
+from config_jetson import *
 from partition import partition
 import time
+import datetime
+
+MASTER_LOG_DIR=""
+
+def execute(cmd):
+  print(cmd)
+  os.system(cmd)
+
 def start_parity():
   # generate scripts
   os.system('python gen_config.py {}'.format(len(NODES)))
+
+  idx = 1
+  for node in NODES:
+    cmd = "scp chain_spec.json config.toml.{} {}:{}".format(idx, node, HOME_DIR)
+    execute(cmd)
+    idx = idx + 1
+
   parity_script = '. {}/start_parity.sh {} {} {} {} {}'
   count=1
   for node in NODES:
     cmd = ssh_command.format(node, parity_script.format(HOME_DIR, CHAIN_DATA, node, LOG_DIR, PARITY_EXE, count))
     count = count +1
-    os.system(cmd)  
+    execute(cmd)
 
 def start_clients(threads,rate, log_dir, workload='ycsb'):
-  cs = zip(CLIENTS,NODES) 
-  client_script = '. {}/start_{}_client.sh {} {}:{} {}/log_{}_{}_nodes_{}_threads_{}_rate {}'
+  cs = zip(CLIENTS,NODES)
+  client_script = '. {}/start_{}_client.sh {} {}:{} {}/client_{}_{}_nodes_{}_threads_{}_rate {} {}'
+  for c in CLIENTS:
+    cmd = "ssh {} \"rm -rf {} && mkdir -p {}\"".format(c,LOG_DIR,LOG_DIR)
+    execute(cmd)
   for (c,s) in cs:
-    cmd = ssh_command.format(c, client_script.format(HOME_DIR, workload, threads, s, PORT, log_dir, s, len(NODES), threads,rate,rate))
-    os.system(cmd)
+    cmd = ssh_command.format(c, client_script.format(HOME_DIR, workload, threads, s, PORT, LOG_DIR, s, len(NODES), threads, rate, rate, DEPLOY_TIME))
+    execute(cmd)
+
+def copy_logs():
+  global MASTER_LOG_DIR
+  if MASTER_LOG_DIR != "":
+    log_dir = MASTER_LOG_DIR
+  else:
+    log_dir = "parity-logs-{}".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S'))
+  cmd = "mkdir {}".format(log_dir)
+  execute(cmd)
+  for c in CLIENTS:
+    cmd = "scp {}:{}/client* {}/".format(c, LOG_DIR, log_dir)
+    execute(cmd)
 
 def get_enodes():
   results=[]
@@ -54,25 +84,27 @@ def kill():
     os.system(kill_command.format(node, 'parity'))
 
 def run_exp(log_file, threads, rates, sleep_time, is_security=False, dropping=False, workload='ycsb'):
-    start_parity()
-    time.sleep(20)
-    add_peers()
-    time.sleep(30)
-    start_clients(threads, rates, log_file, workload)
-    if (not is_security) and (not dropping):
-      time.sleep(sleep_time)
-    else:
-      if is_security:
-        # for security part
-        time.sleep(100)
-        partition(NODES, TIMEOUT)
-        time.sleep(sleep_time-100-TIMEOUT)
-      else: # is dropping
-        time.sleep(250)
-        drop(NODES, 4)
-        time.sleep(sleep_time-250)
-    kill()
-    time.sleep(5)
+  print("Rate {} threads {}".format(rates, threads))
+  start_parity()
+  time.sleep(30)
+  add_peers()
+  time.sleep(30)
+  start_clients(threads, rates, log_file, workload)
+  if (not is_security) and (not dropping):
+    time.sleep(sleep_time)
+  else:
+    if is_security:
+      # for security part
+      time.sleep(100)
+      partition(NODES, TIMEOUT)
+      time.sleep(sleep_time-100-TIMEOUT)
+    else: # is dropping
+      time.sleep(250)
+      drop(NODES, 4)
+      time.sleep(sleep_time-250)
+  kill()
+  copy_logs()
+  time.sleep(5)
 
 def driver(is_security=False, is_fixed=False, is_drop=False, workload='ycsb'):
   global NODES, CLIENTS #ugly hack
@@ -97,7 +129,7 @@ def driver(is_security=False, is_fixed=False, is_drop=False, workload='ycsb'):
       os.system('mkdir -p {}'.format(CLIENT_LOG))
       for t in THREADS:
         for r in RATES: 
-          run_exp(CLIENT_LOG, t, r, 500, is_security, is_drop, workload)
+          run_exp(CLIENT_LOG, t, r, TIMETORUN, is_security, is_drop, workload)
 
     elif sys.argv[1]=='kill':
       kill()
@@ -116,7 +148,12 @@ if __name__=='__main__':
     print error_msg
     sys.exit(1)
 
-  print NODES
+  if len(sys.argv)==4:
+    RATES=[sys.argv[3]]
+
+  if len(sys.argv)==5:
+    MASTER_LOG_DIR=sys.argv[4]
+
   if len(sys.argv)==2:
     driver(False, False, False, 'ycsb')
   elif sys.argv[2]=='-security':
@@ -125,6 +162,8 @@ if __name__=='__main__':
     driver(False, True, False, 'ycsb')
   elif sys.argv[2]=='-drop':
     driver(False, False, True, 'ycsb')
+  elif sys.argv[2]=='-ycsb':
+    driver(False, False, False, 'ycsb')
   elif sys.argv[2]=='-smallbank':
     driver(False, False, False, 'smallbank')
   elif sys.argv[2]=='-donothing':

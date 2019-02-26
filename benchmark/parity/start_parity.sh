@@ -1,4 +1,10 @@
 #!/bin/bash
+
+if [ $# -lt 5 ]; then
+	echo "Usage: $0 CHAIN_DATA HOST LOGS PARITY_BIN IDX"
+	exit 1
+fi
+
 CHAIN_DATA=$1
 KEYS=$CHAIN_DATA/keys/PoA
 HOST=$2

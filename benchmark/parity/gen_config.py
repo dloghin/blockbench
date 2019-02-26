@@ -6,6 +6,10 @@ keyfile_folder_path = "./keys"
 config_file_path = "./config.toml.template"
 genesis_file_path = "./chain_spec.json.template"
 
+if len(sys.argv) < 2:
+    print("Usage: {} <# nodes>".format(sys.argv[0]))
+    sys.exit(1)
+
 num = int(sys.argv[1])
 print "Generating config files for %d nodes...\n" % num
 
