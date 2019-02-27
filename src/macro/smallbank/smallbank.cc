@@ -72,10 +72,10 @@ void ClientThread(DB* sb, const int num_ops, const int txrate) {
 
 int StatusThread(DB* sb, string dbname, string endpoint, double interval, int start_block_height){
   int cur_block_height = start_block_height;
-  long start_time;
-  long end_time;
+  int64_t start_time;
+  int64_t end_time;
   int txcount = 0;
-  long latency;
+  double latency = 0.0;
   int confirm_duration = 1;
   if (dbname == "ethereum")
     confirm_duration = CONFIRM_BLOCK_LENGTH;
@@ -94,7 +94,7 @@ int StatusThread(DB* sb, string dbname, string endpoint, double interval, int st
       cout << "polled block " << cur_block_height << " : " << txs.size() 
            << " txs " << endl; 
       cur_block_height++;           
-      long block_time = time_now(); 
+      int64_t block_time = time_now(); 
       txlock_.lock();
       for (string tmp : txs){ 
         string s = (dbname == "ethereum" || dbname == "parity")

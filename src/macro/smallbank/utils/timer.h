@@ -6,7 +6,7 @@
 #include <fcntl.h>
 
 void sleep(double t);
-long time_now();
+int64_t time_now();
 
 template <typename T>
 class Timer {
