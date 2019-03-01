@@ -8,7 +8,7 @@ PORT='8545'
 THREADS=[8]
 RATES=[8]
 TIMETORUN=300
-DEPLOY_TIME=60
+DEPLOY_TIME=120
 
 HOME_DIR='/data/dumi/blockbench/benchmark/parity'
 CHAIN_DATA='/tmp/chain-data'
@@ -20,8 +20,8 @@ CLIENT_DRIVER='start_ycsb_client.sh'
 
 enode_command = 'curl --data \'{{"jsonrpc": "2.0", "method": "parity_enode", "params":[], "id": 0}}\' -H "Content-Type: application/json" -X POST {}:{}'
 add_peer = 'curl --data \'{{"jsonrpc": "2.0", "method": "parity_addReservedPeer", "params":["{}"], "id": 0}}\' -H "Content-Type: application/json" -X POST {}:{}'
-kill_command = 'ssh -o StrictHostKeyChecking=no dinhtta@{} "killall -KILL {}"'
-ssh_command = 'ssh -o StrictHostKeyChecking=no dinhtta@{} {}'
+kill_command = 'ssh -o StrictHostKeyChecking=no {} "killall -KILL {}"'
+ssh_command = 'ssh -o StrictHostKeyChecking=no {} {}'
 
 partition_cmd = './partition.sh {} {} {} &'
 TIMEOUT=100

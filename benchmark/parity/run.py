@@ -2,7 +2,7 @@
 import os
 import subprocess
 import sys
-from config_jetson import *
+from config import *
 from partition import partition
 import time
 import datetime
@@ -48,6 +48,9 @@ def copy_logs():
     log_dir = "parity-logs-{}".format(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S'))
   cmd = "mkdir {}".format(log_dir)
   execute(cmd)
+  for s in NODES:
+    cms = "scp {}:{}/log {}/node-log-{}".format(s, LOG_DIR, log_dir, s)
+    execute(cms)
   for c in CLIENTS:
     cmd = "scp {}:{}/client* {}/".format(c, LOG_DIR, log_dir)
     execute(cmd)
@@ -84,7 +87,7 @@ def kill():
     os.system(kill_command.format(node, 'parity'))
 
 def run_exp(log_file, threads, rates, sleep_time, is_security=False, dropping=False, workload='ycsb'):
-  print("Rate {} threads {}".format(rates, threads))
+  print("Parity {} benchmark {} nodes {} clients {} threads {} txrate".format(workload, len(NODES), len(CLIENTS), threads, rates))
   start_parity()
   time.sleep(30)
   add_peers()
@@ -144,14 +147,14 @@ if __name__=='__main__':
             + '     -drop:       run the failure benchmark\n'\
             + '     -smallbank:  run the smallbank benchmark\n'\
             + '     -donothing:   run the donothing benchmark\n'
-  if len(sys.argv)<2 or len(sys.argv)>3:
+  if len(sys.argv)<2:
     print error_msg
     sys.exit(1)
 
-  if len(sys.argv)==4:
+  if len(sys.argv)>=4:
     RATES=[sys.argv[3]]
 
-  if len(sys.argv)==5:
+  if len(sys.argv)>=5:
     MASTER_LOG_DIR=sys.argv[4]
 
   if len(sys.argv)==2:

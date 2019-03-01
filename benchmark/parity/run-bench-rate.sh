@@ -5,6 +5,6 @@ if [ $# -lt 2 ]; then
 	exit 1
 fi
 
-cd /home/ubuntu/git/blockbench/benchmark/parity
+cd `dirname ${BASH_SOURCE-$0}`
 
 python run.py start -$1 $2 $3
