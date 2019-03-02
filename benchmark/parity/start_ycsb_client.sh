@@ -9,4 +9,4 @@ export LD_LIBRARY_PATH="/usr/local/lib"
 
 cd `dirname ${BASH_SOURCE-$0}`
 EXE="../../src/macro/kvstore/driver"
-nohup $EXE -db parity -threads $THREADS -P ../../src/macro/kvstore/workloads/workloada.spec -endpoint $HOST -txrate $RATE -wt $WT > $LOG 2>&1 &
+nohup $EXE -db parity -threads $THREADS -P ../../src/macro/kvstore/workloads/workloada.spec -endpoint $HOST -txrate $RATE -wt $WT -wl ycsb > $LOG 2>&1 &
