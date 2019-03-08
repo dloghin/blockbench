@@ -3,7 +3,7 @@
 # If not set, ETH_HOME is the folder of this script. Please uncomment 
 # and change according to your setup.
 # ETH_HOME=
-GETH_BIN="/home/ubuntu/git/go-ethereum/build/bin/geth"
+GETH_BIN="/users/dumi/git/go-ethereum/build/bin/geth"
 
 if [ -z "$ETH_HOME" ]; then
 	cd `dirname ${BASH_SOURCE-$0}`
@@ -18,6 +18,9 @@ HOSTS=$ETH_HOME/hosts
 CLIENTS=$ETH_HOME/clients
 ETH_DATA=$ETH_HOME/data
 LOG_DIR=$ETH_HOME/logs
+
+DEPLOYTIME=20
+WAITTIME=320
 
 # Define benchmark, which can be: donothing, ycsb or smallbank
 # BENCHMARK=donothing

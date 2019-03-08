@@ -9,7 +9,7 @@ let IDX=$1
 for client in `cat $CLIENTS`; do
   if [[ $i -lt $IDX ]]; then
     echo $client index $i
-    ssh -oStrictHostKeyChecking=no $client $ETH_HOME/start-clients.sh $3 $i $2 $4
+    ssh -oStrictHostKeyChecking=no $client $ETH_HOME/start-clients.sh $3 $i $2 $4 $DEPLOYTIME
   fi
   let i=$i+1
 done
@@ -34,7 +34,9 @@ if [[ $5 == "-drop" ]]; then
     let i=$i+1
   done
 else
-  let M=$2*10+240
+  # let M=$2*10+240
+  let M=$WAITTIME
+  echo "Run clients for $M seconds"
   sleep $M
   for client in `cat $CLIENTS`; do
     echo $client index $i

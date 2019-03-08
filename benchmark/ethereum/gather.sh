@@ -16,3 +16,6 @@ for host in `cat $HOSTS`; do
   let i=$i+1
   echo $i
 done
+for host in `cat $HOSTS`; do
+  scp addPeer.txt $host:$ETH_HOME/
+done

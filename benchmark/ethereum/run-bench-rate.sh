@@ -5,7 +5,7 @@ if [ $# -lt 2 ]; then
 	exit 1
 fi
 
-cd /home/ubuntu/git/blockbench/benchmark/ethereum
+cd `dirname ${BASH_SOURCE-$0}`
 
 cp env_$1.sh env.sh
 

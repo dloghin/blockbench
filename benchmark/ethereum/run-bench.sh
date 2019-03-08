@@ -18,14 +18,15 @@ cd `dirname ${BASH_SOURCE-$0}`
 
 echo "Ethereum $BENCHMARK benchmark $NNODES nodes $NCLIENTS clients $NTHREADS threads $TXRATE txrate"
 
-# ./update-env.sh
+./update-env.sh $NNODES
 
 ./stop-all.sh $NNODES
 
 ./init-all.sh $NNODES 
 ./start-all.sh $NNODES
 
-let M=240+40*$NNODES
+# let M=240+40*$NNODES
+let M=240
 sleep $M
 echo "Wait $M s for geth to warm-up..."
 

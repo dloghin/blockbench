@@ -12,7 +12,7 @@ NNODES=$1
 i=0
 for host in `cat $CLIENTS`; do
   echo "Stopping client $host"
-  ssh -oStrictHostKeyChecking=no $host sudo killall -KILL driver 
+  ssh -oStrictHostKeyChecking=no $host killall -KILL driver 
 done
 
 for host in `cat $HOSTS`; do

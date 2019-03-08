@@ -13,8 +13,12 @@ cd `dirname ${BASH_SOURCE-$0}`
 NP=$1
 NC=$2
 
-TSTAMP=`date +%F-%H-%M-%S`
-MASTER_LOG_DIR="geth-logs-$TSTAMP"
+if [ $# -ge 3 ]; then
+	MASTER_LOG_DIR=$3
+else
+	TSTAMP=`date +%F-%H-%M-%S`
+	MASTER_LOG_DIR="geth-logs-$TSTAMP"
+fi
 mkdir -p $MASTER_LOG_DIR
 
 # hosts
