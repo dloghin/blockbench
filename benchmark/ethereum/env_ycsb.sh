@@ -4,6 +4,8 @@
 # and change according to your setup.
 # ETH_HOME=
 GETH_BIN="/users/dumi/git/go-ethereum/build/bin/geth"
+#GETH_VER="1.4.18"
+GETH_VER="1.8.15"
 
 if [ -z "$ETH_HOME" ]; then
 	cd `dirname ${BASH_SOURCE-$0}`
@@ -17,6 +19,7 @@ fi
 HOSTS=$ETH_HOME/hosts
 CLIENTS=$ETH_HOME/clients
 ETH_DATA=$ETH_HOME/data
+ETH_DAG=$ETH_HOME/dag
 LOG_DIR=$ETH_HOME/logs
 
 DEPLOYTIME=20

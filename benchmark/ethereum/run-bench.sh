@@ -17,6 +17,7 @@ cd `dirname ${BASH_SOURCE-$0}`
 . env.sh
 
 echo "Ethereum $BENCHMARK benchmark $NNODES nodes $NCLIENTS clients $NTHREADS threads $TXRATE txrate"
+$GETH_BIN version
 
 ./update-env.sh $NNODES
 

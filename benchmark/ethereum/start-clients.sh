@@ -5,7 +5,7 @@ echo IN START_CLIENTS $1 $2 $3 $4 $5
 cd `dirname ${BASH_SOURCE-$0}`
 . env.sh
 
-export LD_LIBRARY_PATH="/users/dumi/git/restclient-cpp/lib/lib"
+export LD_LIBRARY_PATH="/usr/local/lib"
 
 rm -rf $LOG_DIR
 mkdir -p $LOG_DIR

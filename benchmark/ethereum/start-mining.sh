@@ -10,10 +10,14 @@ cd `dirname ${BASH_SOURCE-$0}`
 
 HOSTNAME=`hostname`
 
-rm -rf $LOG_DIR
+# rm -rf $LOG_DIR
 mkdir -p $LOG_DIR
 
-nohup $GETH_BIN --datadir=$ETH_DATA --nodiscover --rpc --rpcaddr $ADDR --rpcport "8000" --rpccorsdomain "*" --gasprice 0 --maxpeers 32 --networkid 9119 --unlock 0 --password <(echo -n "") --mine --miner.threads 2 > $LOG_DIR/geth_log_$HOSTNAME 2>&1 &
+if [ "$GETH_VER" == "1.4.18" ]; then
+	nohup $GETH_BIN --datadir=$ETH_DATA --nodiscover --rpc --rpcaddr $ADDR --rpcport "8000" --rpccorsdomain "*" --gasprice 0 --maxpeers 32 --networkid 9119 --unlock 0 --password <(echo -n "") --mine --minerthreads 8 > $LOG_DIR/geth_log_$HOSTNAME 2>&1 &
+else
+	nohup $GETH_BIN --datadir=$ETH_DATA --ethash.dagdir=$ETH_DAG --nodiscover --rpc --rpcaddr $ADDR --rpcport "8000" --rpccorsdomain "*" --gasprice 0 --maxpeers 32 --networkid 9119 --unlock 0 --password <(echo -n "") --mine --miner.threads 8 > $LOG_DIR/geth_log_$HOSTNAME 2>&1 &
+fi
 
 sleep 1
 
