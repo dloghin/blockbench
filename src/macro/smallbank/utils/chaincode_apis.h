@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include <cassert>
+#include <iostream>
 
 //const std::string REQUEST_HEADERS = "text/json";
 const std::string REQUEST_HEADERS = "application/json";
@@ -80,7 +81,7 @@ inline std::string compose_deploy(const std::string& path,
 const std::string DEPLOY_SMARTCONTRACT_PREFIX =
     " {\"jsonrpc\":\"2.0\",\
   \"method\":\"eth_sendTransaction\",\
-  \"params\": [{ \"gas\": \"0x1000000\",\
+  \"params\": [{ \"gas\": \"0x100000\",\
                 \"gasPrice\": \"0x0\", \
                \"from\": \"";
 
@@ -118,7 +119,7 @@ const std::string SEND_TXN_PREFIX =
     "{\
   \"jsonrpc\": \"2.0\", \
   \"method\": \"eth_sendTransaction\", \
-  \"params\": [{ \"gas\": \"0x1000000\", \
+  \"params\": [{ \"gas\": \"0x100000\", \
                 \"gasPrice\": \"0x0\", \
                 \"from\": \"";
 
@@ -126,7 +127,7 @@ const std::string CALL_PREFIX =
     "{\
   \"jsonrpc\": \"2.0\", \
   \"method\": \"eth_call\", \
-  \"params\": [{ \"gas\": \"0x1000000\",\
+  \"params\": [{ \"gas\": \"0x100000\",\
                 \"gasPrice\": \"0x0\", \
                 \"from\": \"";
 
@@ -257,6 +258,13 @@ inline std::string send_jsonrpc_request(const std::string &endpoint,
                                         const std::string &request_header,
                                         const std::string &request_data) {
   return RestClient::post(endpoint, request_header, request_data).body;
+  /*
+  auto r = RestClient::post(endpoint, request_header, request_data).body;
+  std::cout << "Req Header: " << request_header << std::endl;
+  std::cout << "Req Body: " << request_data << std::endl;
+  std::cout << "Resp: " << r << std::endl;
+  return r;
+  */
 }
 
 inline std::string deploy_smart_contract(const std::string &endpoint,
