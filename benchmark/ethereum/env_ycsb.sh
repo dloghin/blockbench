@@ -22,8 +22,8 @@ ETH_DATA=$ETH_HOME/data
 ETH_DAG=$ETH_HOME/dag
 LOG_DIR=$ETH_HOME/logs
 
-DEPLOYTIME=20
-WAITTIME=320
+DEPLOYTIME=60
+WAITTIME=360
 
 # Define benchmark, which can be: donothing, ycsb or smallbank
 # BENCHMARK=donothing

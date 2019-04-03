@@ -16,8 +16,11 @@ for host in `cat $HOSTS`; do
   let i=i+1
   if [[ $n -eq $2 ]]; then
     cd $EXE_HOME
-    #both ycsbc and smallbank use the same driver
-    nohup ./driver -db ethereum -threads $1 -P workloads/workloada.spec -endpoint $host:8000 -txrate $4 -wt $5 > $LOG_DIR/client_$host"_"$1 2>&1 &
+    if [ "$BENCHMARK" == "smallbank" ]; then
+      nohup ./driver -db ethereum -ops 10000000 -threads $1 -endpoint $host:8000 -txrate $4 -wt $5 > $LOG_DIR/client_$host"_"$1 2>&1 &
+    else
+      nohup ./driver -db ethereum -threads $1 -P workloads/workloada.spec -endpoint $host:8000 -txrate $4 -wt $5 > $LOG_DIR/client_$host"_"$1 2>&1 &
+    fi
   fi
 done
 
