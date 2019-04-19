@@ -14,7 +14,7 @@ echo "Max tip: $MAXTIP"
 sleep 3
 ./init.sh 8
 sleep 3
-./start-mining.sh
+./start-mining-sync.sh
 CURRTIP=`./get-tip.sh`
 while [ $CURRTIP -lt $MAXTIP ]; do
 	#echo "C $CURRTIP"
