@@ -45,6 +45,10 @@ func (t *Coordinator) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 		return t.beginTx(stub, args)
 	} else if function == "updatePrepare" {
 		return t.updatePrepare(stub, args)
+	} else if function == "updatePrepareCheck" {
+		return t.updatePrepareCheck(stub, args)
+	} else if function == "updateCommitCheck" {
+		t.updateCommitCheck(stub, args)
 	} else if function == "query" {
     return t.query(stub, args)
   }
